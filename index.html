@@ -92,6 +92,7 @@
 
 <script>
     const aTag = document.querySelector('a');
+    const spanTag = document.querySelector('span');
     const queryString = window.location.search;
 
     if (queryString) {
@@ -100,6 +101,25 @@
         console.table([target, queryString]);
         if (target) {
             aTag.href = target;
+            spanTag.textContent = ' Open in app (5)';
+
+            let count = 5;
+            let timeout = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    // Update aTag text with current count
+                    spanTag.textContent = ` Open in app (${count})`;
+                } else {
+                    // Auto click aTag after count down
+                    aTag.click();
+                    clearInterval(timeout);
+                }
+            }, 1000);
+            // Clear if user clicks
+            aTag.addEventListener('click', () => {
+                clearInterval(timeout);
+            });
+
         } else {
             // Show error
             aTag.style.display = 'none';
